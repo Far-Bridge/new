@@ -20,13 +20,13 @@ void test_information(const string &information = "all") {
     // 先输出分割线和注释
     if (information == "adjacency_graph" || information == "all") {
         separate_line("adjacency_graph");
-        adjacency_graph[0].print_graph();
+        adjacency_graph[1].print_graph();
     }
     // 输出点的所有信息
     // 先输出分割线和注释
     if (information == "all_node" || information == "all") {
         separate_line("all_node");
-        all_node[0].print_node();
+        all_node[1].print_node();
     }
     // 输出所有点的剩余度数
     // 先输出分割线和注释
@@ -86,8 +86,13 @@ int test_distance(int node1_id, int node2_id) {
     auto accurate_end = std::chrono::high_resolution_clock::now();
     // LCA距离估计 返回三个值{估算距离，相减的绝对值的最大值，相加的最小值}
     auto layer_start = std::chrono::high_resolution_clock::now();
-    if (algorithm_name == "HDE")
-        layer_hop = layer_distance_scheme1(node1_id, node2_id, 0);
+    if (algorithm_name == "HDE") {
+        if (error_elimination_scheme == "more_extra_tower")
+            layer_hop = layer_distance_scheme1(node1_id, node2_id, 0);
+        else if (error_elimination_scheme == "less_extra_tower")
+            layer_hop = layer_distance_scheme2(node1_id, node2_id, 0);
+    }
+
     auto layer_end = std::chrono::high_resolution_clock::now();
     accurate_duration += accurate_end - accurate_start;
     layer_duration += layer_end - layer_start;

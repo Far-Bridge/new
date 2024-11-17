@@ -8,14 +8,14 @@
 using namespace std;
 
 /// 设置读写图的名称
-//const string graph_name = "github";
+const string graph_name = "github";
 //const string graph_name = "cora";
 //const string graph_name = "facebook";
 //const string graph_name = "twitch";
 //const string graph_name = "dbpedia";
 
 /// 测试
-const string graph_name = "mini";
+//const string graph_name = "mini";
 //const string graph_name = "amazon";
 //const string graph_name = "DBLP";
 
@@ -32,8 +32,8 @@ const string running_mode = "create";
 //const string tower_strategy = "BFS_choose"; // 均匀分布
 const string tower_strategy="degree_first"; // 度数优先
 // 误差消除的策略
-//const string error_elimination_scheme = "add_extra_tower";
-const string error_elimination_scheme = "none";
+//const string error_elimination_scheme = "more_extra_tower";
+const string error_elimination_scheme = "less_extra_tower";
 
 /// 数据参数
 // 小范围扩散构建下一层的边，最大允许距离(max_BFS_depth=2代表距离为2会连成一条新的边)
