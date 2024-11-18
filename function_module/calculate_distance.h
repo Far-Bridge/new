@@ -223,36 +223,36 @@ int layer_distance_scheme2(int node_id1, int node_id2, int now_layer, int no_tow
         if (layer_min_distance > temp) {
             layer_min_distance = temp;
         }
-        for (int x = 0; x < adjacency_graph[now_layer].graph[node_id1].size(); x++) {
-            // TODO 已经转移过了就不允许再转移了
-            if (all_node[now_layer].all_node[adjacency_graph[now_layer].graph[node_id1][x]].tower == 1 &&
-                no_tower1 == 1)
-                continue;
-            // TODO 邻居为灯塔，允许转移一次
-            if (all_node[now_layer].all_node[adjacency_graph[now_layer].graph[node_id1][x]].tower == 1) {
-                temp = layer_distance_scheme2(adjacency_graph[now_layer].graph[node_id1][x], node_id2, now_layer, 1,
-                                              no_tower2);
-
-                if (temp != INT_MAX && layer_min_distance > (1 << now_layer) + temp) {
-                    layer_min_distance = (1 << now_layer) + temp;
-                }
-            }
-        }
-        for (int x = 0; x < adjacency_graph[now_layer].graph[node_id2].size(); x++) {
-            // TODO 已经转移过了就不允许再转移了
-            if (all_node[now_layer].all_node[adjacency_graph[now_layer].graph[node_id2][x]].tower == 1 &&
-                no_tower2 == 1)
-                continue;
-            // TODO 邻居为灯塔，允许转移一次
-            if (all_node[now_layer].all_node[adjacency_graph[now_layer].graph[node_id2][x]].tower == 1) {
-                temp = layer_distance_scheme2(node_id1, adjacency_graph[now_layer].graph[node_id2][x], now_layer,
-                                              no_tower1, 1);
-
-                if (temp != INT_MAX && layer_min_distance > (1 << now_layer) + temp) {
-                    layer_min_distance = (1 << now_layer) + temp;
-                }
-            }
-        }
+//        for (int x = 0; x < adjacency_graph[now_layer].graph[node_id1].size(); x++) {
+//            // TODO 已经转移过了就不允许再转移了
+//            if (all_node[now_layer].all_node[adjacency_graph[now_layer].graph[node_id1][x]].tower == 1 &&
+//                no_tower1 == 1)
+//                continue;
+//            // TODO 邻居为灯塔，允许转移一次
+//            if (all_node[now_layer].all_node[adjacency_graph[now_layer].graph[node_id1][x]].tower == 1) {
+//                temp = layer_distance_scheme2(adjacency_graph[now_layer].graph[node_id1][x], node_id2, now_layer, 1,
+//                                              no_tower2);
+//
+//                if (temp != INT_MAX && layer_min_distance > (1 << now_layer) + temp) {
+//                    layer_min_distance = (1 << now_layer) + temp;
+//                }
+//            }
+//        }
+//        for (int x = 0; x < adjacency_graph[now_layer].graph[node_id2].size(); x++) {
+//            // TODO 已经转移过了就不允许再转移了
+//            if (all_node[now_layer].all_node[adjacency_graph[now_layer].graph[node_id2][x]].tower == 1 &&
+//                no_tower2 == 1)
+//                continue;
+//            // TODO 邻居为灯塔，允许转移一次
+//            if (all_node[now_layer].all_node[adjacency_graph[now_layer].graph[node_id2][x]].tower == 1) {
+//                temp = layer_distance_scheme2(node_id1, adjacency_graph[now_layer].graph[node_id2][x], now_layer,
+//                                              no_tower1, 1);
+//
+//                if (temp != INT_MAX && layer_min_distance > (1 << now_layer) + temp) {
+//                    layer_min_distance = (1 << now_layer) + temp;
+//                }
+//            }
+//        }
         if (layer_min_distance == INT_MAX) {
             if (now_layer == 0)
                 return -1;

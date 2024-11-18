@@ -24,13 +24,13 @@ const string graph_name = "github";
 const string algorithm_name = "HDE";
 
 /// 设置运行的模式
-const string running_mode = "create";
-//const string running_mode = "read";
+//const string running_mode = "create";
+const string running_mode = "read";
 
 /// 策略汇总
 // 选择灯塔的策略
 //const string tower_strategy = "BFS_choose"; // 均匀分布
-const string tower_strategy="degree_first"; // 度数优先
+const string tower_strategy = "degree_first"; // 度数优先
 // 误差消除的策略
 //const string error_elimination_scheme = "more_extra_tower";
 const string error_elimination_scheme = "less_extra_tower";
@@ -38,6 +38,10 @@ const string error_elimination_scheme = "less_extra_tower";
 /// 数据参数
 // 小范围扩散构建下一层的边，最大允许距离(max_BFS_depth=2代表距离为2会连成一条新的边)
 const int max_BFS_depth = 2;
+
+/// 测试参数
+// 随机数种子
+const int random_seed = 1;
 
 /// 文件根路径参数
 const string root_path = "E:/essay_start/new/";

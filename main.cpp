@@ -29,7 +29,7 @@ void main_test() {
         test_information("all");
         test_distance("all");
     }
-
+    test_distance(100);
 }
 
 // 数据初始化处理函数(读图并初始化)

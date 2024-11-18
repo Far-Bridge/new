@@ -1,6 +1,9 @@
 #ifndef NEW_TEST_MODULE_H
 #define NEW_TEST_MODULE_H
 
+// 随机数的头文件
+#include <random>
+
 #include "../function_module/calculate_distance.h"
 
 using namespace std;
@@ -167,6 +170,74 @@ void test_distance(const string &mode) {
     cout << endl << endl << "accurate_duration: " << accurate_duration.count() / (max_node_id[0] * max_node_id[0])
          << "second" << "\t";
     cout << "layer_duration:" << layer_duration.count() / (max_node_id[0] * max_node_id[0]) << "second";
+    cout << endl;
+}
+
+// 重载 测试输出num个随机点对之间的精确距离和坐标计算距离
+void test_distance(int num) {
+    // 如果不需要测试则直接退出测试函数
+    if (num <= 0)
+        return;
+    // 先输出分隔线
+    separate_line("test_distance");
+    // 用于统计精确的点对数量
+    double accuracy_num = 0;
+    // 用于统计总计测试的点对数量
+    double total_test_num = 0;
+    // 统计各种误差的点对有多少对
+    vector<int> error_hop_num;
+    // 当前的误差
+    int err_hop;
+    // 用于保存随机数
+    int random_node1_id;
+    int random_node2_id;
+    // 创建伪随机数生成器，并给定随机数种子
+    mt19937 rander(random_seed);
+    // 创建了均匀分布的整数随机数生成器，定义要生成的随机数的范围(包含0和max_node_id)
+    uniform_int_distribution<> dis(0, max_node_id[0]);
+
+    for (int x = 0; x < num; x++) {
+        // 生成介于0和max_node_id之间的随机数(包含0和max_node_id)
+        random_node1_id = dis(rander);
+        random_node2_id = dis(rander);
+        // 计算误差
+        err_hop = test_distance(random_node1_id, random_node2_id);
+        if (err_hop == 0)
+            // 如果没有误差
+            accuracy_num += 1;
+        else {
+            // 取误差的绝对值
+            err_hop = abs(err_hop);
+            // 如果统计误差对数量尺寸够用，则对应位置+1
+            if (error_hop_num.size() >= err_hop) {
+                error_hop_num[err_hop - 1] += 1;
+            } else {
+                // 如果统计误差对数量尺寸不够用，则先开辟到那么大的空间，再对应位置+1
+                error_hop_num.resize(err_hop);
+                error_hop_num[err_hop - 1] = 1;
+            }
+        }
+        // 总的测试数量增加
+        total_test_num++;
+    }
+    // 输出准确率
+    cout << "accuracy_percent: " << (accuracy_num / total_test_num) * 100 << "%" << endl << endl;
+    // 输出总测试点对数量
+    cout << "total_test_num: " << total_test_num << "\t";
+    // 输出计算精确的点对数量
+    cout << "accuracy_num: " << accuracy_num << "\t";
+    // 输出准确率
+    cout << "accuracy_percent: " << (accuracy_num / total_test_num) * 100 << "%" << endl << endl;
+    // 输出各种误差所占的百分率
+    for (int x = 0; x < error_hop_num.size(); x++) {
+        if (error_hop_num[x] != 0) {
+            cout << "error_hop " << x + 1 << ": " << (error_hop_num[x] / total_test_num) * 100 << "%" << "\t";
+        }
+    }
+    // 输出平均运行时间
+    cout << endl << endl << "accurate_duration: " << accurate_duration.count() / num
+         << "second" << "\t";
+    cout << "layer_duration:" << layer_duration.count() / num << "second";
     cout << endl;
 }
 
