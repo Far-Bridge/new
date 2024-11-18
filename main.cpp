@@ -1,6 +1,7 @@
 #include "function_module/read_write.h"
 #include "function_module/distinguish_layer.h"
 #include "function_module/calculate_distance.h"
+#include "other_function/create_map.h"
 
 // 测试模块
 #include "test_module/test_module.h"
@@ -24,6 +25,9 @@ int main() {
 }
 
 void main_test() {
+    // 创建新数据集不需要测试
+    if (running_mode == "create_test_map")
+        return;
     // 输出所有点的各种信息
     if (graph_name == "mini" && algorithm_name == "HDE") {
         test_information("all");
@@ -46,6 +50,15 @@ void HDE_initial_process() {
 }
 
 void run_HDE() {
+    /// 创建新的图
+    if (running_mode == "create_test_map") {
+        int node_num = 10000;
+        int min_node_degree = 15;
+        int max_node_degree = 20;
+        string dataset_name = "customize1";
+        create_map(node_num, min_node_degree, max_node_degree, dataset_name);
+        return;
+    }
     /// 数据初始化处理函数(读图并初始化)
     HDE_initial_process();
     /// 输出基础的信息
@@ -58,8 +71,8 @@ void run_HDE() {
         // TODO 层次划分中，如果某一个点的邻接表信息是空的，即附近2跳没有其他灯塔，能否正确读取
         write_layer_and_node();
     }
-    /// 直接读入坐标文件
-    if (running_mode == "read") {
+        /// 直接读入坐标文件
+    else if (running_mode == "read") {
         // 读取分层邻接表和点的映射关系，以及每层最大的id编号
         if (read_layer_and_node() == -1)
             // 文件打开失败，终止后续操作

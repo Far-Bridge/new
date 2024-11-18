@@ -90,9 +90,9 @@ int test_distance(int node1_id, int node2_id) {
     // LCA距离估计 返回三个值{估算距离，相减的绝对值的最大值，相加的最小值}
     auto layer_start = std::chrono::high_resolution_clock::now();
     if (algorithm_name == "HDE") {
-        if (error_elimination_scheme == "more_extra_tower")
+        if (error_elimination_strategy == "more_extra_tower")
             layer_hop = layer_distance_scheme1(node1_id, node2_id, 0);
-        else if (error_elimination_scheme == "less_extra_tower")
+        else if (error_elimination_strategy == "less_extra_tower")
             layer_hop = layer_distance_scheme2(node1_id, node2_id, 0);
     }
 

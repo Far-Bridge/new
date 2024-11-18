@@ -7,7 +7,7 @@
 // 方案1：添加额外灯塔，完全消除两个非灯塔相邻的情况，完全消除误差
 void add_extra_tower(int now_layer) {
     // 不允许任何相邻的非灯塔点
-    if (error_elimination_scheme == "more_extra_tower") {
+    if (error_elimination_strategy == "more_extra_tower") {
         for (int x = 0; x <= max_node_id[now_layer]; x++) {
             // 如果当前顶点不是灯塔
             if (all_node[now_layer].all_node[x].tower == 0) {
@@ -28,7 +28,7 @@ void add_extra_tower(int now_layer) {
         }
     }
     // 不允许一个点周围全是非灯塔点
-    if (error_elimination_scheme == "less_extra_tower") {
+    if (error_elimination_strategy == "less_extra_tower") {
         // 用于标记是否要添加灯塔
         int flag;
         for (int x = 0; x <= max_node_id[now_layer]; x++) {

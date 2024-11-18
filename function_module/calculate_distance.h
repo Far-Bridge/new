@@ -10,6 +10,8 @@
 
 #include "../data_structure/data_structure.h"
 
+int violence_distance(int node_id1, int node_id2, int now_layer);
+
 // 传入两个点的id，输出精确距离(跳数)
 // 正数为两点之间距离，-1为不可达
 int accurate_distance(int node_id1, int node_id2) {
@@ -101,6 +103,17 @@ int layer_distance_scheme1(int node_id1, int node_id2, int now_layer, int no_tow
         if (adjacency_graph[now_layer].graph[node_id1][x] == node_id2)
             // 返回层次距离
             return (1 << now_layer);
+    }
+    // 如果到了最深层，仍然不能在当前层处理距离，则直接暴力寻找
+    if (now_layer == max_layer_id) {
+        temp = violence_distance(node_id1, node_id2, now_layer);
+        if (temp == INT_MAX) {
+            if (now_layer == 0)
+                return -1;
+            else
+                return INT_MAX;
+        }
+        return temp * (1 << now_layer);
     }
     /// 进入下一层递归条件
     // 情况1：两个点在这一层都是灯塔
@@ -214,6 +227,17 @@ int layer_distance_scheme2(int node_id1, int node_id2, int now_layer, int no_tow
             // 返回层次距离
             return (1 << now_layer);
     }
+    // 如果到了最深层，仍然不能在当前层处理距离，则直接暴力寻找
+    if (now_layer == max_layer_id) {
+        temp = violence_distance(node_id1, node_id2, now_layer);
+        if (temp == INT_MAX) {
+            if (now_layer == 0)
+                return -1;
+            else
+                return INT_MAX;
+        }
+        return temp * (1 << now_layer);
+    }
     /// 进入下一层递归条件
     // 情况1：两个点在这一层都是灯塔
     if (all_node[now_layer].all_node[node_id1].tower == 1 && all_node[now_layer].all_node[node_id2].tower == 1) {
@@ -311,6 +335,68 @@ int layer_distance_scheme2(int node_id1, int node_id2, int now_layer, int no_tow
         }
         return layer_min_distance;
     }
+}
+
+// 暴力寻找距离
+int violence_distance(int node_id1, int node_id2, int now_layer) {
+    /// 两个用于BFS的队列
+    // 创建BFS的队列
+    queue<int> BFS_queue;
+    // 创建BFS已经扩散过的标记队列，初始化大小为点的个数,并且设置所有点初始值为0 (0为未被扩散，1为已被扩散)
+    vector<int> BFS_mark;
+    BFS_mark.resize(max_node_id[now_layer] + 1, 0);
+    /// 初始化操作
+    // 初始点进入队列
+    BFS_queue.push(node_id1);
+    // 加入-1进入队列代表这一轮扩散结束，用于最大扩散深度控制
+    BFS_queue.push(-1);
+    // 标记该点为已经扩散
+    BFS_mark[node_id1] = 1;
+    // 用于储存当前BFS的深度
+    int now_BFS_depth = 0;
+    // 用于储存当前正在操作的点的id
+    int now_node_id;
+
+    /// 正式的BFS遍历
+    // 开始BFS遍历 如果BFS队列不为空
+    while (!BFS_queue.empty()) {
+        // 弹出队首点的id并保存
+        now_node_id = BFS_queue.front();
+        BFS_queue.pop();
+
+        /// 退出循环的条件
+        // 如果队首是-1，代表该轮深度的BFS扩散结束
+        if (now_node_id == -1) {
+            // 标记进入了下一轮扩散
+            now_BFS_depth++;
+            // 如果队列已经空了，这是最后一个-1，则结束BFS(未找到目标点)
+            if (BFS_queue.empty())
+                return -1;
+            else {
+                // 否则增加一个扩散深度的标记-1
+                BFS_queue.push(-1);
+                continue;
+            }
+        }
+
+        /// 处理当前点
+        // 如果找到了第二个点,返回他们之间的距离(跳数)
+        if (now_node_id == node_id2)
+            return now_BFS_depth;
+
+        /// 处理当前点的邻居点
+        // 将该点未被扩散的邻居加入BFS队列
+        for (int x: adjacency_graph[now_layer].graph[now_node_id]) {
+            // 如果这个邻居已经被扩散过了，则跳过
+            if (BFS_mark[x] == 1)
+                continue;
+            // 将这个没有被扩散过的邻居加入队列
+            BFS_queue.push(x);
+            // 标记该邻居为已经扩散
+            BFS_mark[x] = 1;
+        }
+    }
+    return -1;
 }
 
 #endif //NEW_CALCULATE_DISTANCE_H

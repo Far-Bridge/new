@@ -16,7 +16,8 @@ void distinguish_layer() {
     cout << "\rmax_layer is: \t\t\t" << max_layer_id + 1;
     // 判断是否需要继续分层
     // TODO 暂定为当前图为完全图时候停止分层
-    while (adjacency_graph[max_layer_id].edge != (max_node_id[max_layer_id] * (max_node_id[max_layer_id] + 1)) / 2) {
+    while (adjacency_graph[max_layer_id].edge != (max_node_id[max_layer_id] * (max_node_id[max_layer_id] + 1)) / 2 &&
+           max_node_id[max_layer_id] * 100 < max_node_id[0]) {
         // 创建出新的一层所需的所有数据结构
         all_node.emplace_back(); // 点的信息
         adjacency_graph.emplace_back(); // 邻接表

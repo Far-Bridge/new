@@ -8,7 +8,7 @@
 using namespace std;
 
 /// 设置读写图的名称
-const string graph_name = "github";
+//const string graph_name = "github";
 //const string graph_name = "cora";
 //const string graph_name = "facebook";
 //const string graph_name = "twitch";
@@ -18,22 +18,24 @@ const string graph_name = "github";
 //const string graph_name = "mini";
 //const string graph_name = "amazon";
 //const string graph_name = "DBLP";
+const string graph_name = "customize1";
 
 /// 设置算法的名称 (各种算法不允许同时运行，仅允许单独运行)
 // 分层距离估计算法 Hierarchical Distance Estimation(HDE)
 const string algorithm_name = "HDE";
 
 /// 设置运行的模式
-//const string running_mode = "create";
-const string running_mode = "read";
+const string running_mode = "create";
+//const string running_mode = "read";
+//const string running_mode = "create_test_map";
 
 /// 策略汇总
 // 选择灯塔的策略
 //const string tower_strategy = "BFS_choose"; // 均匀分布
 const string tower_strategy = "degree_first"; // 度数优先
 // 误差消除的策略
-//const string error_elimination_scheme = "more_extra_tower";
-const string error_elimination_scheme = "less_extra_tower";
+//const string error_elimination_strategy = "more_extra_tower";
+const string error_elimination_strategy = "less_extra_tower";
 
 /// 数据参数
 // 小范围扩散构建下一层的边，最大允许距离(max_BFS_depth=2代表距离为2会连成一条新的边)
@@ -97,6 +99,11 @@ void set_filename() {
         graph_filename = root_path + "data/amazon_graph.txt";
         // 设置图的模式为邻接表图
         graph_mode = "edge_graph";
+    } else if (graph_name == "customize1") {
+        // 读入自定义小图的数据
+        graph_filename = root_path + "data/customize1.txt";
+        // 设置图的模式为边图
+        graph_mode = "adjacency_graph";
     } else if (graph_name == "mini") {
         // 读入自定义小图的数据
         graph_filename = root_path + "data/my_mini_graph.txt";
@@ -105,10 +112,10 @@ void set_filename() {
     }
     // 仅HDE算法需要设置读取坐标文件名称
     if (algorithm_name == "HDE") {
-        //从文件中读入图坐标数据
-        read_layer_filename = root_path + "output_file/" + graph_name + ".txt";
+        //从文件中读入图层次数据
+        read_layer_filename = root_path + "output_file/" + error_elimination_strategy + "/" + graph_name + ".txt";
         //写入图坐标信息
-        write_layer_filename = root_path + "output_file/" + graph_name + ".txt";
+        write_layer_filename = root_path + "output_file/" + error_elimination_strategy + "/" + graph_name + ".txt";
     }
 }
 
