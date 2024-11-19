@@ -19,6 +19,7 @@ using namespace std;
 //const string graph_name = "amazon";
 //const string graph_name = "DBLP";
 const string graph_name = "customize1";
+//const string graph_name = "customize2";
 
 /// 设置算法的名称 (各种算法不允许同时运行，仅允许单独运行)
 // 分层距离估计算法 Hierarchical Distance Estimation(HDE)
@@ -34,8 +35,8 @@ const string running_mode = "create";
 //const string tower_strategy = "BFS_choose"; // 均匀分布
 const string tower_strategy = "degree_first"; // 度数优先
 // 误差消除的策略
-//const string error_elimination_strategy = "more_extra_tower";
-const string error_elimination_strategy = "less_extra_tower";
+//const string error_elimination_strategy = "more_extra_tower"; // 最大量灯塔点(非灯塔点不相连)
+const string error_elimination_strategy = "less_extra_tower"; // 最小量灯塔点(非灯塔点可以相连)
 
 /// 数据参数
 // 小范围扩散构建下一层的边，最大允许距离(max_BFS_depth=2代表距离为2会连成一条新的边)
@@ -102,6 +103,11 @@ void set_filename() {
     } else if (graph_name == "customize1") {
         // 读入自定义小图的数据
         graph_filename = root_path + "data/customize1.txt";
+        // 设置图的模式为边图
+        graph_mode = "adjacency_graph";
+    } else if (graph_name == "customize2") {
+        // 读入自定义小图的数据
+        graph_filename = root_path + "data/customize2.txt";
         // 设置图的模式为边图
         graph_mode = "adjacency_graph";
     } else if (graph_name == "mini") {

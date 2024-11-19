@@ -53,8 +53,8 @@ void run_HDE() {
     /// 创建新的图
     if (running_mode == "create_test_map") {
         int node_num = 10000;
-        int min_node_degree = 15;
-        int max_node_degree = 20;
+        int min_node_degree = 30;
+        int max_node_degree = 40;
         string dataset_name = "customize1";
         create_map(node_num, min_node_degree, max_node_degree, dataset_name);
         return;
